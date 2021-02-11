@@ -16,7 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-// TODO: Come up with a cleaner way of doing this. This code was rushed.
+// TODO: Come up with a cleaner way of doing this
 public class GenerateForgeModWindow {
 
 	public static void displayWindow(LanguageConfig langConfig) {
@@ -24,7 +24,7 @@ public class GenerateForgeModWindow {
 		window.initModality(Modality.APPLICATION_MODAL);
 		window.setTitle(langConfig.get("window.generateMod.forge"));
 		window.setWidth(500);
-		window.setHeight(500);
+		window.setHeight(300);
 		window.setResizable(false);
 
 		Label label1 = new Label(langConfig.get("menu.generateMod.name"));
@@ -42,6 +42,7 @@ public class GenerateForgeModWindow {
 
 		String[] versions = { "1.16", "1.16.1", "1.16.2", "1.16.3", "1.16.4", "1.16.5" };
 		ComboBox c = new ComboBox(FXCollections.observableArrayList(versions));
+		
 		Button btn = UIUtils.createButton(langConfig.get("menu.generateMod.browse"), event -> {
 			CreateNewFolderWindow w = new CreateNewFolderWindow(langConfig.get("menu.generateMod.confirm"), langConfig.get("menu.ok"));
 			w.makeWindow();
@@ -61,7 +62,7 @@ public class GenerateForgeModWindow {
 					}
 				}
 			} else {
-				confirmWindow();
+				confirmWindow(langConfig.get("dialog.fillBoxes"));
 			}
 		});
 		Button btn3 = UIUtils.createButton(langConfig.get("menu.generateMod.cancel"), event -> {
@@ -91,7 +92,7 @@ public class GenerateForgeModWindow {
 		VBox layout5 = new VBox(10);
 		layout5.getChildren().addAll(label4);
 		layout5.setAlignment(Pos.BOTTOM_CENTER);
-		layout5.setTranslateY(60);
+		layout5.setTranslateY(10);
 
 		BorderPane border = new BorderPane();
 		border.setTop(layout5);
@@ -107,22 +108,22 @@ public class GenerateForgeModWindow {
 	}
 
 	public static void generateMod(Stage window, TextField tf1, TextField tf2, ComboBox c) {
-		File workspace = new File(tf1.getText());
+		File workspace = new File(/*workspace*/"");
 		if (!workspace.exists()) {
 			workspace.mkdirs();
 		}
-		File proj = new File(workspace.getAbsolutePath() + "\\" + tf2.getText());
+		File proj = new File(workspace.getAbsolutePath() + "\\" + tf1.getText());
 		if (!proj.exists()) {
 			proj.mkdirs();
 		}
 		window.close();
-		// Setup the forge stuff here
+		//TODO: Setup the forge modding stuff here
 	}
 
-	public static void confirmWindow() {
+	public static void confirmWindow(String s) {
 		Stage error = new Stage();
 		VBox layout = new VBox(10);
-		Label boxlabel = new Label("All boxes need to be filled");
+		Label boxlabel = new Label(s);
 		Button okbtn = UIUtils.createButton("OK", okevent -> {
 			error.close();
 		});

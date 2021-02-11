@@ -65,5 +65,6 @@
 	"dialog.versionWarning.yes": "I Know What I'm Doing!",
 	"dialog.versionWarning.no": "Go Back",
 	"dialog.versionWarning.prompt.1": "Are you sure you want to use Java ",
-	"dialog.versionWarning.prompt.2": "? Java 1.8 is recommended for modding."
+	"dialog.versionWarning.prompt.2": "? Java 1.8 is recommended for modding.",
+	"dialog.fillBoxes": "All Boxes Must be Filled"
 }

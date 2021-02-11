@@ -1,6 +1,5 @@
 package io.github.railroad.objects;
 
-import io.github.railroad.Railroad;
 import io.github.railroad.config.LanguageConfig;
 import io.github.railroad.utility.UIUtils;
 import javafx.scene.control.Menu;
