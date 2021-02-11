@@ -42,12 +42,6 @@ public class GenerateFabricModWindow {
 
 		String[] versions = { "1.16", "1.16.1", "1.16.2", "1.16.3", "1.16.4", "1.16.5" };
 		ComboBox c = new ComboBox(FXCollections.observableArrayList(versions));
-		
-		Button btn = UIUtils.createButton(langConfig.get("menu.generateMod.browse"), event -> {
-			CreateNewFolderWindow w = new CreateNewFolderWindow(langConfig.get("menu.generateMod.confirm"), langConfig.get("menu.ok"));
-			w.makeWindow();
-			tf1.setText(w.txt);
-		});
 
 		Button btn2 = UIUtils.createButton(langConfig.get("menu.generateMod.confirm"), event -> {
 			if (tf1.getText() != null && c.getValue() != null && tf2 != null) {
@@ -79,27 +73,20 @@ public class GenerateFabricModWindow {
 		layout2.setAlignment(Pos.CENTER);
 
 		VBox layout3 = new VBox(10);
-		layout3.getChildren().addAll(btn);
-		layout3.setAlignment(Pos.CENTER_RIGHT);
-		layout3.setTranslateX(-70);
-		layout3.setTranslateY(-35);
+		layout3.getChildren().addAll(btn2, btn3);
+		layout3.setAlignment(Pos.CENTER);
+		layout3.setTranslateY(-20);
 
 		VBox layout4 = new VBox(10);
-		layout4.getChildren().addAll(btn2, btn3);
-		layout4.setAlignment(Pos.CENTER);
-		layout4.setTranslateY(-20);
-
-		VBox layout5 = new VBox(10);
-		layout5.getChildren().addAll(label4);
-		layout5.setAlignment(Pos.BOTTOM_CENTER);
-		layout5.setTranslateY(10);
+		layout4.getChildren().addAll(label4);
+		layout4.setAlignment(Pos.BOTTOM_CENTER);
+		layout4.setTranslateY(10);
 
 		BorderPane border = new BorderPane();
-		border.setTop(layout5);
+		border.setTop(layout4);
 		border.setLeft(layout);
 		border.setCenter(layout2);
-		border.setRight(layout3);
-		border.setBottom(layout4);
+		border.setBottom(layout3);
 
 		Scene scene = new Scene(border);
 		window.setScene(scene);
