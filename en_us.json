@@ -54,6 +54,7 @@
 	"menu.generateMod.confirm": "Confirm",
 	"menu.generateMod.cancel": "Cancel",
 	"menu.generateMod.name": "Name:",
+	"menu.generateMod.modId": "Mod ID:",
 	"menu.generateMod.package": "Package:",
 	"menu.generateMod.version": "Version:",
 	"menu.generateMod.title.forge": "Generate New Forge Mod",

@@ -14,7 +14,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -25,8 +24,8 @@ public class GenerateForgeModWindow {
 		Stage window = new Stage();
 		window.initModality(Modality.APPLICATION_MODAL);
 		window.setTitle(langConfig.get("window.generateMod.forge"));
-		window.setWidth(500);
-		window.setHeight(350);
+		window.setWidth(400);
+		window.setHeight(300);
 		window.setResizable(false);
 
 		Label label = new Label(langConfig.get("menu.generateMod.modId"));
@@ -34,22 +33,32 @@ public class GenerateForgeModWindow {
 		Label label2 = new Label(langConfig.get("menu.generateMod.package"));
 		Label label3 = new Label(langConfig.get("menu.generateMod.version"));
 		Label label4 = new Label(langConfig.get("menu.generateMod.title.forge"));
-		label4.setScaleX(3);
-		label4.setScaleY(3);
-		label4.setScaleZ(3);
+		label4.setScaleX(2);
+		label4.setScaleY(2);
+		label4.setScaleZ(2);
 
 		TextField tf = new TextField();
 		tf.setMaxSize(200, 20);
+		tf.setTranslateY(38);
 		TextField tf1 = new TextField();
 		tf1.setMaxSize(200, 20);
+		tf1.setTranslateY(38);
 		TextField tf2 = new TextField();
 		tf2.setMaxSize(200, 20);
+		tf2.setTranslateY(38);
 
 		String[] versions = { "1.16", "1.16.1", "1.16.2", "1.16.3", "1.16.4", "1.16.5" };
 		ComboBox c = new ComboBox(FXCollections.observableArrayList(versions));
+		c.setMinHeight(20);
+		c.setMinWidth(80);
 		c.setTranslateX(-60);
+		c.setTranslateY(37);
 		String[] versionVersions = { "Latest", "Recommended" };
 		ComboBox c2 = new ComboBox(FXCollections.observableArrayList(versionVersions));
+		c2.setMinWidth(120);
+		c2.setMinHeight(22);
+		c2.setTranslateY(0);
+		c2.setTranslateX(50);
 
 		Button btn2 = UIUtils.createButton(langConfig.get("menu.generateMod.confirm"), event -> {
 			if (tf1.getText() != null && c.getValue() != null && tf2 != null) {
@@ -68,42 +77,40 @@ public class GenerateForgeModWindow {
 				confirmWindow(langConfig.get("dialog.fillBoxes"));
 			}
 		});
+		btn2.setTranslateX(-35);
 		Button btn3 = UIUtils.createButton(langConfig.get("menu.generateMod.cancel"), event -> {
 			window.close();
 		});
+		btn3.setTranslateY(-35);
+		btn3.setTranslateX(35);
 
 		VBox layout = new VBox(20);
 		layout.getChildren().addAll(label1, label, label2, label3);
 		layout.setAlignment(Pos.CENTER_LEFT);
-		layout.setTranslateX(100);
+		layout.setTranslateX(60);
+		layout.setTranslateY(30);
 
-		VBox layout2 = new VBox(10);
-		layout2.getChildren().addAll(tf1, tf, tf2, c);
+		VBox layout2 = new VBox(12);
+		layout2.getChildren().addAll(tf1, tf, tf2, c, c2);
 		layout2.setAlignment(Pos.CENTER);
-		layout2.setTranslateX(70);
+		layout2.setTranslateX(0);
+		layout2.setTranslateY(13);
 
 		VBox layout3 = new VBox(10);
 		layout3.getChildren().addAll(btn2, btn3);
 		layout3.setAlignment(Pos.CENTER);
-		layout3.setTranslateY(-20);
+		layout3.setTranslateY(25);
 
 		VBox layout4 = new VBox(10);
 		layout4.getChildren().addAll(label4);
 		layout4.setAlignment(Pos.BOTTOM_CENTER);
 		layout4.setTranslateY(20);
 
-		VBox layout5 = new VBox(10);
-		layout5.getChildren().addAll(c2);
-		layout5.setAlignment(Pos.CENTER_LEFT);
-		layout5.setTranslateY(53);
-		layout5.setTranslateX(-100);
-
 		BorderPane border = new BorderPane();
 		border.setTop(layout4);
 		border.setLeft(layout);
-		border.setCenter(layout2);
 		border.setBottom(layout3);
-		border.setRight(layout5);
+		border.setCenter(layout2);
 
 		Scene scene = new Scene(border);
 		window.setScene(scene);
