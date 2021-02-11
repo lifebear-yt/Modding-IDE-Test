@@ -24,9 +24,10 @@ public class GenerateFabricModWindow {
 		window.initModality(Modality.APPLICATION_MODAL);
 		window.setTitle(langConfig.get("window.generateMod.fabric"));
 		window.setWidth(500);
-		window.setHeight(300);
+		window.setHeight(350);
 		window.setResizable(false);
 
+		Label label = new Label(langConfig.get("menu.generateMod.modId"));
 		Label label1 = new Label(langConfig.get("menu.generateMod.name"));
 		Label label2 = new Label(langConfig.get("menu.generateMod.package"));
 		Label label3 = new Label(langConfig.get("menu.generateMod.version"));
@@ -35,6 +36,8 @@ public class GenerateFabricModWindow {
 		label4.setScaleY(3);
 		label4.setScaleZ(3);
 
+		TextField tf = new TextField();
+		tf.setMaxSize(200, 20);
 		TextField tf1 = new TextField();
 		tf1.setMaxSize(200, 20);
 		TextField tf2 = new TextField();
@@ -46,13 +49,13 @@ public class GenerateFabricModWindow {
 		Button btn2 = UIUtils.createButton(langConfig.get("menu.generateMod.confirm"), event -> {
 			if (tf1.getText() != null && c.getValue() != null && tf2 != null) {
 				if (System.getProperty("java.version").startsWith("1.8")) {
-					generateMod(window, tf1, tf2, c);
+					generateMod(window, tf, tf1, tf2, c);
 				} else {
 					boolean shouldClose = JavaVersionConfirmWindow.displayWindow("Java Version Warning",
 							langConfig.get("dialog.versionWarning.prompt.1") + System.getProperty("java.version")
 									+ langConfig.get("dialog.versionWarning.prompt.2"), langConfig);
 					if (shouldClose) {
-						generateMod(window, tf1, tf2, c);
+						generateMod(window, tf, tf1, tf2, c);
 					}
 				}
 			} else {
@@ -64,12 +67,12 @@ public class GenerateFabricModWindow {
 		});
 
 		VBox layout = new VBox(20);
-		layout.getChildren().addAll(label1, label2, label3);
+		layout.getChildren().addAll(label1, label, label2, label3);
 		layout.setAlignment(Pos.CENTER_LEFT);
-		layout.setTranslateX(70);
+		layout.setTranslateX(100);
 
-		VBox layout2 = new VBox(10);
-		layout2.getChildren().addAll(tf1, tf2, c);
+		VBox layout2 = new VBox(8);
+		layout2.getChildren().addAll(tf1, tf, tf2, c);
 		layout2.setAlignment(Pos.CENTER);
 
 		VBox layout3 = new VBox(10);
@@ -94,7 +97,7 @@ public class GenerateFabricModWindow {
 		window.centerOnScreen();
 	}
 
-	public static void generateMod(Stage window, TextField tf1, TextField tf2, ComboBox c) {
+	public static void generateMod(Stage window, TextField tf, TextField tf1, TextField tf2, ComboBox c) {
 		File workspace = new File(/*workspace*/"");
 		if (!workspace.exists()) {
 			workspace.mkdirs();
@@ -103,8 +106,20 @@ public class GenerateFabricModWindow {
 		if (!proj.exists()) {
 			proj.mkdirs();
 		}
+		File packageDir = new File(proj + "\\" +"src\\main\\java\\"+ tf2.getText().replace(".", "\\"));
+		if (!packageDir.exists()) {
+			packageDir.mkdirs();
+		}
+		File assetsDir = new File(proj + "\\" +"src\\main\\resources\\assets\\"+ tf.getText());
+		if (!assetsDir.exists()) {
+			assetsDir.mkdirs();
+		}
+		File dataDir = new File(proj + "\\" +"src\\main\\resources\\data\\"+ tf.getText());
+		if (!dataDir.exists()) {
+			dataDir.mkdirs();
+		}
 		window.close();
-		// TODO: Setup the fabric modding stuff here
+		//TODO: Setup the fabric modding stuff here
 	}
 
 	public static void confirmWindow(String s) {
@@ -122,5 +137,6 @@ public class GenerateFabricModWindow {
 		error.setHeight(100);
 		error.showAndWait();
 	}
+	
 	
 }

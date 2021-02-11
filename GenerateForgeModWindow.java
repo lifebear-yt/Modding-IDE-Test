@@ -1,6 +1,7 @@
 package io.github.railroad.objects;
 
 import java.io.File;
+import java.io.IOException;
 
 import io.github.railroad.config.LanguageConfig;
 import io.github.railroad.utility.UIUtils;
@@ -13,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -24,9 +26,10 @@ public class GenerateForgeModWindow {
 		window.initModality(Modality.APPLICATION_MODAL);
 		window.setTitle(langConfig.get("window.generateMod.forge"));
 		window.setWidth(500);
-		window.setHeight(300);
+		window.setHeight(350);
 		window.setResizable(false);
 
+		Label label = new Label(langConfig.get("menu.generateMod.modId"));
 		Label label1 = new Label(langConfig.get("menu.generateMod.name"));
 		Label label2 = new Label(langConfig.get("menu.generateMod.package"));
 		Label label3 = new Label(langConfig.get("menu.generateMod.version"));
@@ -35,6 +38,8 @@ public class GenerateForgeModWindow {
 		label4.setScaleY(3);
 		label4.setScaleZ(3);
 
+		TextField tf = new TextField();
+		tf.setMaxSize(200, 20);
 		TextField tf1 = new TextField();
 		tf1.setMaxSize(200, 20);
 		TextField tf2 = new TextField();
@@ -42,17 +47,21 @@ public class GenerateForgeModWindow {
 
 		String[] versions = { "1.16", "1.16.1", "1.16.2", "1.16.3", "1.16.4", "1.16.5" };
 		ComboBox c = new ComboBox(FXCollections.observableArrayList(versions));
+		c.setTranslateX(-60);
+		String[] versionVersions = { "Latest", "Recommended" };
+		ComboBox c2 = new ComboBox(FXCollections.observableArrayList(versionVersions));
 
 		Button btn2 = UIUtils.createButton(langConfig.get("menu.generateMod.confirm"), event -> {
 			if (tf1.getText() != null && c.getValue() != null && tf2 != null) {
 				if (System.getProperty("java.version").startsWith("1.8")) {
-					generateMod(window, tf1, tf2, c);
+					generateMod(window, tf, tf1, tf2, c);
 				} else {
 					boolean shouldClose = JavaVersionConfirmWindow.displayWindow("Java Version Warning",
 							langConfig.get("dialog.versionWarning.prompt.1") + System.getProperty("java.version")
-									+ langConfig.get("dialog.versionWarning.prompt.2"), langConfig);
+									+ langConfig.get("dialog.versionWarning.prompt.2"),
+							langConfig);
 					if (shouldClose) {
-						generateMod(window, tf1, tf2, c);
+						generateMod(window, tf, tf1, tf2, c);
 					}
 				}
 			} else {
@@ -64,13 +73,14 @@ public class GenerateForgeModWindow {
 		});
 
 		VBox layout = new VBox(20);
-		layout.getChildren().addAll(label1, label2, label3);
+		layout.getChildren().addAll(label1, label, label2, label3);
 		layout.setAlignment(Pos.CENTER_LEFT);
-		layout.setTranslateX(70);
+		layout.setTranslateX(100);
 
 		VBox layout2 = new VBox(10);
-		layout2.getChildren().addAll(tf1, tf2, c);
+		layout2.getChildren().addAll(tf1, tf, tf2, c);
 		layout2.setAlignment(Pos.CENTER);
+		layout2.setTranslateX(70);
 
 		VBox layout3 = new VBox(10);
 		layout3.getChildren().addAll(btn2, btn3);
@@ -80,13 +90,20 @@ public class GenerateForgeModWindow {
 		VBox layout4 = new VBox(10);
 		layout4.getChildren().addAll(label4);
 		layout4.setAlignment(Pos.BOTTOM_CENTER);
-		layout4.setTranslateY(10);
+		layout4.setTranslateY(20);
+
+		VBox layout5 = new VBox(10);
+		layout5.getChildren().addAll(c2);
+		layout5.setAlignment(Pos.CENTER_LEFT);
+		layout5.setTranslateY(53);
+		layout5.setTranslateX(-100);
 
 		BorderPane border = new BorderPane();
 		border.setTop(layout4);
 		border.setLeft(layout);
 		border.setCenter(layout2);
 		border.setBottom(layout3);
+		border.setRight(layout5);
 
 		Scene scene = new Scene(border);
 		window.setScene(scene);
@@ -94,8 +111,9 @@ public class GenerateForgeModWindow {
 		window.centerOnScreen();
 	}
 
-	public static void generateMod(Stage window, TextField tf1, TextField tf2, ComboBox c) {
-		File workspace = new File(/*workspace*/"");
+	public static void generateMod(Stage window, TextField tf, TextField tf1, TextField tf2, ComboBox c) {
+		//TODO: Get workspace
+		File workspace = new File(/* workspace */"");
 		if (!workspace.exists()) {
 			workspace.mkdirs();
 		}
@@ -103,8 +121,36 @@ public class GenerateForgeModWindow {
 		if (!proj.exists()) {
 			proj.mkdirs();
 		}
+		File packageDir = new File(proj + "\\" + "src\\main\\java\\" + tf2.getText().replace(".", "\\"));
+		if (!packageDir.exists()) {
+			packageDir.mkdirs();
+		}
+		File main = new File(packageDir + "\\" + tf1.getText() + ".java");
+		if (!main.exists()) {
+			try {
+				main.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		File assetsDir = new File(proj + "\\" + "src\\main\\resources\\assets\\" + tf.getText());
+		if (!assetsDir.exists()) {
+			assetsDir.mkdirs();
+		}
+		File dataDir = new File(proj + "\\" + "src\\main\\resources\\data\\" + tf.getText());
+		if (!dataDir.exists()) {
+			dataDir.mkdirs();
+		}
+		File modtoml = new File(proj + "\\" + "src\\main\\resources\\mods.toml");
+		if (!modtoml.exists()) {
+			try {
+				modtoml.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		window.close();
-		//TODO: Setup the forge modding stuff here
+		// TODO: Setup the other forge modding stuff here
 	}
 
 	public static void confirmWindow(String s) {
@@ -122,5 +168,5 @@ public class GenerateForgeModWindow {
 		error.setHeight(100);
 		error.showAndWait();
 	}
-	
+
 }
